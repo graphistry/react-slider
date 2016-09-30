@@ -21490,7 +21490,7 @@
 /* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -21550,6 +21550,10 @@
 	
 	var _Marks2 = _interopRequireDefault(_Marks);
 	
+	var _warning = __webpack_require__(314);
+	
+	var _warning2 = _interopRequireDefault(_warning);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function noop() {}
@@ -21587,6 +21591,7 @@
 	    var range = props.range;
 	    var min = props.min;
 	    var max = props.max;
+	    var step = props.step;
 	
 	    var initialValue = range ? Array.apply(null, Array(range + 1)).map(function () {
 	      return min;
@@ -21605,6 +21610,10 @@
 	      recent = bounds.length - 1;
 	    }
 	
+	    if (process.env.NODE_ENV !== 'production' && step && Math.floor(step) === step && (max - min) % step !== 0) {
+	      (0, _warning2.default)(false, 'Slider[max] - Slider[min] (%s) should be a multiple of Slider[step] (%s)', max - min, step);
+	    }
+	
 	    _this.state = {
 	      handle: null,
 	      recent: recent,
@@ -21616,7 +21625,9 @@
 	  Slider.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
 	    var _this2 = this;
 	
-	    if (!('value' in nextProps || 'min' in nextProps || 'max' in nextProps)) return;
+	    if (!('defaultValue' in nextProps || 'value' in nextProps || 'min' in nextProps || 'max' in nextProps)) {
+	      return;
+	    }
 	
 	    var bounds = this.state.bounds;
 	
@@ -21636,7 +21647,11 @@
 	        this.props.onChange(nextBounds);
 	      }
 	    } else {
-	      var _value = nextProps.value !== undefined ? nextProps.value : bounds[1];
+	      var _value = nextProps.value;
+	
+	      if (!('value' in nextProps)) {
+	        _value = !('defaultValue' in nextProps) || nextProps.defaultValue === this.props.defaultValue ? bounds[1] : nextProps.defaultValue;
+	      }
 	      var nextValue = this.trimAlignValue(_value, nextProps);
 	      if (nextValue === bounds[1] && bounds[0] === nextProps.min) return;
 	
@@ -21686,7 +21701,7 @@
 	    var diffValue = diffPosition / this.getSliderLength() * (props.max - props.min);
 	
 	    var value = this.trimAlignValue(this.startValue + diffValue);
-	    var oldValue = state[state.handle];
+	    var oldValue = state.bounds[state.handle];
 	    if (value === oldValue) return;
 	
 	    var nextBounds = [].concat((0, _toConsumableArray3.default)(state.bounds));
@@ -22031,6 +22046,7 @@
 	    var _props5 = this.props;
 	    var className = _props5.className;
 	    var prefixCls = _props5.prefixCls;
+	    var tooltipPrefixCls = _props5.tooltipPrefixCls;
 	    var disabled = _props5.disabled;
 	    var vertical = _props5.vertical;
 	    var dots = _props5.dots;
@@ -22063,6 +22079,7 @@
 	
 	    var commonHandleProps = {
 	      prefixCls: prefixCls,
+	      tooltipPrefixCls: tooltipPrefixCls,
 	      noTip: isNoTip,
 	      tipTransitionName: tipTransitionName,
 	      tipFormatter: tipFormatter,
@@ -22130,6 +22147,7 @@
 	  included: _react2.default.PropTypes.bool,
 	  className: _react2.default.PropTypes.string,
 	  prefixCls: _react2.default.PropTypes.string,
+	  tooltipPrefixCls: _react2.default.PropTypes.string,
 	  disabled: _react2.default.PropTypes.bool,
 	  children: _react2.default.PropTypes.any,
 	  onBeforeChange: _react2.default.PropTypes.func,
@@ -22171,6 +22189,7 @@
 	
 	exports.default = Slider;
 	module.exports = exports['default'];
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ },
 /* 177 */
@@ -24515,6 +24534,7 @@
 	  Handle.prototype.render = function render() {
 	    var _props = this.props;
 	    var prefixCls = _props.prefixCls;
+	    var tooltipPrefixCls = _props.tooltipPrefixCls;
 	    var className = _props.className;
 	    var tipTransitionName = _props.tipTransitionName;
 	    var tipFormatter = _props.tipFormatter;
@@ -24540,7 +24560,7 @@
 	    return _react2.default.createElement(
 	      _rcTooltip2.default,
 	      {
-	        prefixCls: prefixCls.replace('slider', 'tooltip'),
+	        prefixCls: tooltipPrefixCls || prefixCls + '-tooltip',
 	        placement: 'top',
 	        visible: isTooltipVisible,
 	        overlay: _react2.default.createElement(
@@ -24563,6 +24583,7 @@
 	
 	Handle.propTypes = {
 	  prefixCls: _react2.default.PropTypes.string,
+	  tooltipPrefixCls: _react2.default.PropTypes.string,
 	  className: _react2.default.PropTypes.string,
 	  vertical: _react2.default.PropTypes.bool,
 	  offset: _react2.default.PropTypes.number,
