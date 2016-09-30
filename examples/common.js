@@ -21617,7 +21617,8 @@
 	    _this.state = {
 	      handle: null,
 	      recent: recent,
-	      bounds: bounds
+	      bounds: bounds,
+	      useDefaultValue: 'defaultValue' in props && props.value === undefined
 	    };
 	    return _this;
 	  }
@@ -21629,7 +21630,9 @@
 	      return;
 	    }
 	
-	    var bounds = this.state.bounds;
+	    var _state = this.state;
+	    var bounds = _state.bounds;
+	    var useDefaultValue = _state.useDefaultValue;
 	
 	    if (nextProps.range) {
 	      var value = nextProps.value || bounds;
@@ -21650,7 +21653,7 @@
 	      var _value = nextProps.value;
 	
 	      if (!('value' in nextProps)) {
-	        _value = !('defaultValue' in nextProps) || nextProps.defaultValue === this.props.defaultValue ? bounds[1] : nextProps.defaultValue;
+	        _value = !useDefaultValue || nextProps.defaultValue === this.props.defaultValue ? bounds[1] : nextProps.defaultValue;
 	      }
 	      var nextValue = this.trimAlignValue(_value, nextProps);
 	      if (nextValue === bounds[1] && bounds[0] === nextProps.min) return;
@@ -21718,7 +21721,8 @@
 	    }
 	    this.onChange({
 	      handle: nextHandle,
-	      bounds: nextBounds
+	      bounds: nextBounds,
+	      useDefaultValue: false
 	    });
 	  };
 	
@@ -21801,7 +21805,7 @@
 	
 	    var nextBounds = [].concat((0, _toConsumableArray3.default)(state.bounds));
 	    nextBounds[valueNeedChanging] = value;
-	    this.onChange({ bounds: nextBounds });
+	    this.onChange({ bounds: nextBounds, useDefaultValue: false });
 	  };
 	
 	  Slider.prototype.getValue = function getValue() {
@@ -22040,9 +22044,9 @@
 	    var _this4 = this,
 	        _classNames3;
 	
-	    var _state = this.state;
-	    var handle = _state.handle;
-	    var bounds = _state.bounds;
+	    var _state2 = this.state;
+	    var handle = _state2.handle;
+	    var bounds = _state2.bounds;
 	    var _props5 = this.props;
 	    var className = _props5.className;
 	    var prefixCls = _props5.prefixCls;
