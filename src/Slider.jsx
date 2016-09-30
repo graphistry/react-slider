@@ -68,6 +68,9 @@ class Slider extends React.Component {
       handle: null,
       recent,
       bounds,
+      useDefaultValue: ((
+        'defaultValue' in props) &&
+        props.value === undefined),
     };
   }
 
@@ -79,7 +82,7 @@ class Slider extends React.Component {
       return;
     }
 
-    const { bounds } = this.state;
+    const { bounds, useDefaultValue } = this.state;
     if (nextProps.range) {
       const value = nextProps.value || bounds;
       const nextBounds = value.map(v => this.trimAlignValue(v, nextProps));
@@ -92,7 +95,7 @@ class Slider extends React.Component {
     } else {
       let { value } = nextProps;
       if (!('value' in nextProps)) {
-        value = !('defaultValue' in nextProps) ||
+        value = !useDefaultValue ||
                  nextProps.defaultValue === this.props.defaultValue ?
                  bounds[1] : nextProps.defaultValue;
       }
@@ -161,6 +164,7 @@ class Slider extends React.Component {
     this.onChange({
       handle: nextHandle,
       bounds: nextBounds,
+      useDefaultValue: false,
     });
   }
 
@@ -238,7 +242,7 @@ class Slider extends React.Component {
 
     const nextBounds = [...state.bounds];
     nextBounds[valueNeedChanging] = value;
-    this.onChange({ bounds: nextBounds });
+    this.onChange({ bounds: nextBounds, useDefaultValue: false });
   }
 
   getValue() {
