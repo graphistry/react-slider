@@ -51,6 +51,32 @@ describe('rc-slider', function test() {
     expect(trackStyle).to.match(/visibility: visible;/);
   });
 
+  it('should render a Slider with an updated default value correctly', () => {
+    let count = 0;
+    let defaultValue = 50;
+    do {
+      const trackLeftStyle = /left: 0%;/;
+      const trackWidthStyle = defaultValue === 50 ? /width: 50%;/ : /width: 100%;/;
+      const sliderLeftStyle = defaultValue === 50 ? /left: 50%;/ : /left: 100%;/;
+
+      const sliderWithDefaultValue = ReactDOM.render(<Slider defaultValue={defaultValue} />, div);
+      expect(sliderWithDefaultValue.state.bounds[1]).to.be(defaultValue);
+      expect(ReactTestUtils
+             .scryRenderedDOMComponentsWithClass(sliderWithDefaultValue, 'rc-slider-handle')[0]
+             .style.cssText)
+        .to.match(sliderLeftStyle);
+
+      const trackStyle = ReactTestUtils
+              .scryRenderedDOMComponentsWithClass(sliderWithDefaultValue, 'rc-slider-track')[0]
+              .style.cssText;
+      expect(trackStyle).to.match(trackLeftStyle);
+      expect(trackStyle).to.match(trackWidthStyle);
+      expect(trackStyle).to.match(/visibility: visible;/);
+
+      defaultValue = 100;
+    } while (++count === 1);
+  });
+
   it('should render a Slider with value corrently', () => {
     const sliderWithValue = ReactDOM.render(<Slider value={50} />, div);
     expect(sliderWithValue.state.bounds[1]).to.be(50);

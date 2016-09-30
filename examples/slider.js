@@ -1,9 +1,9 @@
 /* eslint react/no-multi-comp: 0 */
-require('rc-slider/assets/index.less');
+require('@graphistry/rc-slider/assets/index.less');
 
 const React = require('react');
 const ReactDOM = require('react-dom');
-const Slider = require('rc-slider');
+const Slider = require('@graphistry/rc-slider');
 
 const style = { width: 400, margin: 50 };
 
@@ -81,7 +81,7 @@ ReactDOM.render(
   <div>
     <div style={style}>
       <p>Basic Slider</p>
-      <Slider tipTransitionName="rc-slider-tooltip-zoom-down" onChange={log} />
+      <Slider tipTransitionName="@graphistry/rc-slider-tooltip-zoom-down" onChange={log} />
     </div>
     <div style={style}>
       <p>Basic Slider，`step=20`</p>
@@ -94,7 +94,7 @@ ReactDOM.render(
     <div style={style}>
       <p>Basic Slider with `tipFormatter`</p>
       <Slider tipFormatter={percentFormatter}
-        tipTransitionName="rc-slider-tooltip-zoom-down" onChange={log}
+        tipTransitionName="@graphistry/rc-slider-tooltip-zoom-down" onChange={log}
       />
     </div>
     <div style={style}>

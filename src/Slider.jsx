@@ -72,7 +72,12 @@ class Slider extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!('value' in nextProps || 'min' in nextProps || 'max' in nextProps)) return;
+    if (!('defaultValue' in nextProps ||
+          'value' in nextProps ||
+          'min' in nextProps ||
+          'max' in nextProps)) {
+      return;
+    }
 
     const { bounds } = this.state;
     if (nextProps.range) {
@@ -85,7 +90,12 @@ class Slider extends React.Component {
         this.props.onChange(nextBounds);
       }
     } else {
-      const value = nextProps.value !== undefined ? nextProps.value : bounds[1];
+      let { value } = nextProps;
+      if (!('value' in nextProps)) {
+        value = !('defaultValue' in nextProps) ||
+                 nextProps.defaultValue === this.props.defaultValue ?
+                 bounds[1] : nextProps.defaultValue;
+      }
       const nextValue = this.trimAlignValue(value, nextProps);
       if (nextValue === bounds[1] && bounds[0] === nextProps.min) return;
 
