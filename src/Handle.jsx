@@ -1,79 +1,47 @@
 import React from 'react';
-import Tooltip from 'rc-tooltip';
+import PropTypes from 'prop-types';
 
 export default class Handle extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isTooltipVisible: false,
-    };
-  }
-
-  showTooltip() {
-    this.setState({
-      isTooltipVisible: true,
-    });
-  }
-
-  hideTooltip() {
-    this.setState({
-      isTooltipVisible: false,
-    });
-  }
-
   render() {
     const {
-      prefixCls,
-      tooltipPrefixCls,
-      className,
-      tipTransitionName,
-      tipFormatter,
-      vertical,
-      offset,
-      value,
-      dragging,
-      noTip,
+      className, vertical, offset, style, disabled, min, max, value, ...restProps,
     } = this.props;
 
-    const style = vertical ? { bottom: `${offset}%` } : { left: `${offset}%` };
-    const handle = (
-      <div className={className} style={style}
-        onMouseUp={this.showTooltip.bind(this)}
-        onMouseEnter={this.showTooltip.bind(this)}
-        onMouseLeave={this.hideTooltip.bind(this)}
-      />
-    );
-
-    if (noTip) {
-      return handle;
+    const postionStyle = vertical ? { bottom: `${offset}%` } : { left: `${offset}%` };
+    const elStyle = {
+      ...style,
+      ...postionStyle,
+    };
+    let ariaProps = {};
+    if (value !== undefined) {
+      ariaProps = {
+        ...ariaProps,
+        'aria-valuemin': min,
+        'aria-valuemax': max,
+        'aria-valuenow': value,
+        'aria-disabled': !!disabled,
+      };
     }
-
-    const isTooltipVisible = dragging || this.state.isTooltipVisible;
     return (
-      <Tooltip
-        prefixCls={tooltipPrefixCls || `${prefixCls}-tooltip`}
-        placement="top"
-        visible={isTooltipVisible}
-        overlay={<span>{tipFormatter(value)}</span>}
-        delay={0}
-        transitionName={tipTransitionName}
-      >
-        {handle}
-      </Tooltip>
+      <div
+        role="slider"
+        tabIndex="0"
+        {...ariaProps}
+        {...restProps}
+        className={className}
+        style={elStyle}
+      />
     );
   }
 }
 
 Handle.propTypes = {
-  prefixCls: React.PropTypes.string,
-  tooltipPrefixCls: React.PropTypes.string,
-  className: React.PropTypes.string,
-  vertical: React.PropTypes.bool,
-  offset: React.PropTypes.number,
-  tipTransitionName: React.PropTypes.string,
-  tipFormatter: React.PropTypes.func,
-  value: React.PropTypes.number,
-  dragging: React.PropTypes.bool,
-  noTip: React.PropTypes.bool,
+  className: PropTypes.string,
+  vertical: PropTypes.bool,
+  offset: PropTypes.number,
+  style: PropTypes.object,
+  disabled: PropTypes.bool,
+  min: PropTypes.number,
+  max: PropTypes.number,
+  value: PropTypes.number,
 };

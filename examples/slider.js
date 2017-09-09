@@ -1,14 +1,14 @@
-/* eslint react/no-multi-comp: 0 */
-require('@graphistry/rc-slider/assets/index.less');
+/* eslint react/no-multi-comp: 0, max-len: 0 */
+import '@graphistry/rc-slider/assets/index.less';
 
-const React = require('react');
-const ReactDOM = require('react-dom');
-const Slider = require('@graphistry/rc-slider');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Slider, { createSliderWithTooltip } from '@graphistry/rc-slider';
 
-const style = { width: 400, margin: 50 };
+const style = { width: 600, margin: 50 };
 
 function log(value) {
-  console.log(value);
+  console.log(value); //eslint-disable-line
 }
 
 
@@ -16,50 +16,54 @@ function percentFormatter(v) {
   return `${v} %`;
 }
 
-const CustomizedSlider = React.createClass({
-  getInitialState() {
-    return {
+const SliderWithTooltip = createSliderWithTooltip(Slider);
+
+class CustomizedSlider extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       value: 50,
     };
-  },
-  onSliderChange(value) {
+  }
+  onSliderChange = (value) => {
     log(value);
     this.setState({
       value,
     });
-  },
-  onAfterChange(value) {
-    console.log(value);
-  },
+  }
+  onAfterChange = (value) => {
+    console.log(value); //eslint-disable-line
+  }
   render() {
     return (
       <Slider value={this.state.value}
         onChange={this.onSliderChange} onAfterChange={this.onAfterChange}
       />
     );
-  },
-});
+  }
+}
 
-const DynamicBounds = React.createClass({
-  getInitialState() {
-    return {
+class DynamicBounds extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       min: 0,
       max: 100,
     };
-  },
-  onSliderChange(value) {
+  }
+  onSliderChange = (value) => {
     log(value);
-  },
-  onMinChange(e) {
+  }
+  onMinChange = (e) => {
     this.setState({
       min: +e.target.value || 0,
     });
-  },
-  onMaxChange(e) {
+  }
+  onMaxChange = (e) => {
     this.setState({
       max: +e.target.value || 100,
     });
-  },
+  }
   render() {
     return (
       <div>
@@ -74,14 +78,14 @@ const DynamicBounds = React.createClass({
         />
       </div>
     );
-  },
-});
+  }
+}
 
 ReactDOM.render(
   <div>
     <div style={style}>
       <p>Basic Slider</p>
-      <Slider tipTransitionName="@graphistry/rc-slider-tooltip-zoom-down" onChange={log} />
+      <Slider onChange={log} />
     </div>
     <div style={style}>
       <p>Basic Slider，`step=20`</p>
@@ -92,14 +96,52 @@ ReactDOM.render(
       <Slider dots step={20} defaultValue={100} onAfterChange={log} />
     </div>
     <div style={style}>
-      <p>Basic Slider with `tipFormatter`</p>
-      <Slider tipFormatter={percentFormatter}
-        tipTransitionName="@graphistry/rc-slider-tooltip-zoom-down" onChange={log}
+      <p>Basic Slider，`step=20, dots, dotStyle={"{borderColor: 'orange'}"}, activeDotStyle={"{borderColor: 'yellow'}"}`</p>
+      <Slider dots step={20} defaultValue={100} onAfterChange={log} dotStyle={{ borderColor: 'orange' }} activeDotStyle={{ borderColor: 'yellow' }} />
+    </div>
+    <div style={style}>
+      <p>Slider with tooltip, with custom `tipFormatter`</p>
+      <SliderWithTooltip
+        tipFormatter={percentFormatter}
+        tipProps={{ overlayClassName: 'foo' }}
+        onChange={log}
       />
     </div>
     <div style={style}>
-      <p>Basic Slider without tooltip</p>
-      <Slider tipFormatter={null} onChange={log} />
+      <p>Slider with custom handle and track style.<strong>(old api, will be deperacete)</strong></p>
+      <Slider
+        defaultValue={30}
+        maximumTrackStyle={{ backgroundColor: 'red', height: 10 }}
+        minimumTrackStyle={{ backgroundColor: 'blue', height: 10 }}
+        handleStyle={{
+          borderColor: 'blue',
+          height: 28,
+          width: 28,
+          marginLeft: -14,
+          marginTop: -9,
+          backgroundColor: 'black',
+        }}
+      />
+    </div>
+    <div style={style}>
+      <p>Slider with custom handle and track style.<strong>(The recommended new api)</strong></p>
+      <Slider
+        defaultValue={30}
+        trackStyle={{ backgroundColor: 'blue', height: 10 }}
+        handleStyle={{
+          borderColor: 'blue',
+          height: 28,
+          width: 28,
+          marginLeft: -14,
+          marginTop: -9,
+          backgroundColor: 'black',
+        }}
+        railStyle={{ backgroundColor: 'red', height: 10 }}
+      />
+    </div>
+    <div style={style}>
+      <p>Basic Slider, disabled</p>
+      <Slider onChange={log} disabled />
     </div>
     <div style={style}>
       <p>Controlled Slider</p>

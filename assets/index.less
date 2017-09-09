@@ -23,12 +23,20 @@
 
 .@{prefixClass} {
   position: relative;
-  height: 4px;
+  height: 14px;
+  padding: 5px 0;
   width: 100%;
   border-radius: @border-radius-base;
-  background-color: #e9e9e9;
-
+  touch-action: none;
   .borderBox();
+
+  &-rail {
+    position: absolute;
+    width: 100%;
+    background-color: #e9e9e9;
+    height: 4px;
+    border-radius: @border-radius-base;
+  }
 
   &-track {
     position: absolute;
@@ -45,24 +53,32 @@
     width: 14px;
     height: 14px;
     cursor: pointer;
+    cursor: -webkit-grab;
+    cursor: grab;
     border-radius: 50%;
     border: solid 2px tint(@primary-color, 50%);
     background-color: #fff;
+    touch-action: pan-x;
 
     &:hover {
       border-color: tint(@primary-color, 20%);
     }
-    &-active {
-      &:active {
-        border-color: tint(@primary-color, 20%);
-        box-shadow: 0 0 5px tint(@primary-color, 20%);
-      }
+    &:active {
+      border-color: tint(@primary-color, 20%);
+      box-shadow: 0 0 5px tint(@primary-color, 20%);
+      cursor: -webkit-grabbing;
+      cursor: grabbing;
+    }
+    &:focus {
+      border-color: tint(@primary-color, 20%);
+      box-shadow: 0 0 0 5px tint(@primary-color, 50%);
+      outline: none;
     }
   }
 
   &-mark {
     position: absolute;
-    top: 10px;
+    top: 18px;
     left: 0;
     width: 100%;
     font-size: 12px;
@@ -119,6 +135,7 @@
 
     .@{prefixClass}-handle, .@{prefixClass}-dot {
       border-color: @disabledColor;
+      box-shadow: none;
       background-color: #fff;
       cursor: not-allowed;
     }
@@ -130,23 +147,31 @@
 }
 
 .@{prefixClass}-vertical {
-  width: 4px;
+  width: 14px;
   height: 100%;
+  padding: 0 5px;
+
   .@{prefixClass} {
+    &-rail {
+      height: 100%;
+      width: 4px;
+    }
+
     &-track {
+      left: 5px;
       bottom: 0;
       width: 4px;
     }
 
     &-handle {
-      position: absolute;
       margin-left: -5px;
       margin-bottom: -7px;
+      touch-action: pan-y;
     }
 
     &-mark {
       top: 0;
-      left: 10px;
+      left: 18px;
       height: 100%;
     }
 
