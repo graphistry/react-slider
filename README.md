@@ -3,6 +3,11 @@
 
 Slider UI component for React
 
+Forked from [`react-component/rc-slider`](https://npmjs.org/package/rc-slider). This one
+will update the slider position if you re-render it with a new `defaultValue`. This makes
+it possible to use it as an uncontrolled component, but still programmatically update the
+slider position from props, without putting it into fully-controlled mode.
+
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
 [![Test coverage][coveralls-image]][coveralls-url]
@@ -10,8 +15,8 @@ Slider UI component for React
 [![node version][node-image]][node-url]
 [![npm download][download-image]][download-url]
 
-[npm-image]: http://img.shields.io/npm/v/rc-slider.svg?style=flat-square
-[npm-url]: http://npmjs.org/package/rc-slider
+[npm-image]: http://img.shields.io/npm/v/@graphistry/rc-slider.svg?style=flat-square
+[npm-url]: http://npmjs.org/package/@graphistry/rc-slider
 [travis-image]: https://img.shields.io/travis/react-component/slider.svg?style=flat-square
 [travis-url]: https://travis-ci.org/react-component/slider
 [coveralls-image]: https://img.shields.io/coveralls/react-component/slider.svg?style=flat-square
@@ -20,8 +25,8 @@ Slider UI component for React
 [gemnasium-url]: https://gemnasium.com/react-component/slider
 [node-image]: https://img.shields.io/badge/node.js-%3E=_0.10-green.svg?style=flat-square
 [node-url]: http://nodejs.org/download/
-[download-image]: https://img.shields.io/npm/dm/rc-slider.svg?style=flat-square
-[download-url]: https://npmjs.org/package/rc-slider
+[download-image]: https://img.shields.io/npm/dm/@graphistry/rc-slider.svg?style=flat-square
+[download-url]: https://npmjs.org/package/@graphistry/rc-slider
 
 ## Screenshots
 
@@ -41,21 +46,21 @@ Slider UI component for React
 ## Install
 
 ```bash
-npm install --save rc-slider
+npm install --save @graphistry/rc-slider
 ```
 
-[![rc-slider](https://nodei.co/npm/rc-slider.png)](https://npmjs.org/package/rc-slider)
+[![rc-slider](https://nodei.co/npm/@graphistry/rc-slider.png)](https://npmjs.org/package/@graphistry/rc-slider)
 
 ## Usage
 
 ````js
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Slider, { Range } from 'rc-slider';
+import Slider, { Range } from '@graphistry/rc-slider';
 // We can just import Slider or Range to reduce bundle size
-// import Slider from 'rc-slider/lib/Slider';
-// import Range from 'rc-slider/lib/Range';
-import 'rc-slider/assets/index.css';
+// import Slider from '@graphistry/rc-slider/lib/Slider';
+// import Range from '@graphistry/rc-slider/lib/Range';
+import '@graphistry/rc-slider/assets/index.css';
 
 ReactDOM.render(
   <div>
@@ -73,7 +78,7 @@ ReactDOM.render(
 An extension to make Slider or Range support Tooltip on handle.
 
 ```jsx
-const Slider = require('rc-slider');
+const Slider = require('@graphistry/rc-slider');
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 const Range = createSliderWithTooltip(Slider.Range);
 ```
@@ -154,4 +159,4 @@ Online examples: [http://react-component.github.io/slider/](http://react-compone
 
 ## License
 
-`rc-slider` is released under the MIT license.
+`@graphistry/rc-slider` is released under the MIT license.
